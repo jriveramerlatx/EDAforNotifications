@@ -1,6 +1,6 @@
 import pytest
 from pydantic import ValidationError
-from Events import Category
+from Handlers import Category
 
 
 def test_category_ok():
