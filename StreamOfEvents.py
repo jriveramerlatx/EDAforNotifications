@@ -53,20 +53,23 @@ class EventsReader:
         offset = int(offset)
         return offset
 
+    def reset_offset(self):
+        self.offset[self.consumer] = 0
+
     # log_entry_exit
     def __exit__(self, exc_type, exc_val, exc_tb):
         logger.debug(f"Closing data... {self.fn=}")
-        if self.fn == "":
-            logger.debug(f"Nothing to save...")
+        if self.test:
+            self.offset[self.consumer] = 0
+            logger.debug("TEST ACTIVATED -> offset=0")
+        elif self.fn:
+            self.offset[self.consumer] = self.get_current_offset(self.fn)
         else:
-            if self.test:
-                self.offset[self.consumer] = 0
-                logger.debug("TEST ACTIVATED -> offset=0")
-            else:
-                self.offset[self.consumer] = self.get_current_offset(self.fn)
-            logger.debug(
-                f"offset for consumer {self.consumer} {self.offset[self.consumer]} saved"
+            logger.info(
+                f"Offset for consumer  {self.consumer} offset {self.offset[self.consumer]} with nothing to be saved"
             )
-            with open(self.storage_file, "wb") as f:
-                pickle.dump(self.offset, f)
-        logger.debug(f"Closed data...")
+        with open(self.storage_file, "wb") as f:
+            pickle.dump(self.offset, f)
+        logger.info(
+            f"Offset for consumer {self.consumer} {self.offset[self.consumer]} saved"
+        )

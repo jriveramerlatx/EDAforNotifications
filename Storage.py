@@ -9,6 +9,9 @@ class Database(object):
     def get(self, id):
         pass
 
+    def rows(self):
+        return []
+
     def save(self):
         pass
 
@@ -29,6 +32,9 @@ class FileDatabase(Database):
 
     def set(self, id, data):
         self.data[id] = data
+
+    def rows(self):
+        return [r for r in self.data.values()]
 
     def save(self, dump=pickle.dump, open=open):
         with open(self.name, "wb") as f:
