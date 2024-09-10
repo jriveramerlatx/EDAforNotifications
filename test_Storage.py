@@ -28,6 +28,18 @@ def test_FileDatabase_with_data():
     assert x == "test"
 
 
+def test_FileDatabase_remove():
+    mock_dump = mock.Mock()
+    dbname = "test.dat"
+    db = FileDatabase(dbname, isfile=lambda x: False)
+    x = db.set(1, "new data")
+    y = db.get(1)
+    assert y == "new data"
+    db.remove(1)
+    y = db.get(1)
+    assert y is None
+
+
 def test_FileDatabase_new_data():
     mock_dump = mock.Mock()
     dbname = "test.dat"

@@ -16,19 +16,27 @@ PATH = "./Stream/"
 
 class EventsReader:
     def __init__(
-        self, event_name="Category", finder=glob.iglob, consumer="default", test=False
+        self,
+        event_name="Category",
+        finder=glob.iglob,
+        consumer="default",
+        test=False,
     ):
-        self.finder = finder
         self.test = test
         self.consumer = consumer
         self.storage_file = f"{event_name}.dat"
         self.event_name = event_name
         self.path = f"{PATH}/{self.event_name}_*.json"
         self.offset = {self.consumer: 0}
+        self.max_offset = 0
         if os.path.isfile(self.storage_file):
             with open(self.storage_file, "rb") as f:
                 self.offset = pickle.load(f)
                 self.offset[self.consumer] = self.offset.get(self.consumer, 0)
+        self.finder = filter(
+            lambda x: self.get_current_offset(x) > self.offset[self.consumer],
+            finder(self.path),
+        )
         self.fn = ""
         # return self
 
@@ -37,10 +45,16 @@ class EventsReader:
         return self
 
     def fetch(self):
-        logger.debug(f"Start fetching data...")
+        logger.info(f"Start fetching data... (CURRENT: {self.offset[self.consumer]})")
         n = 0
-        for self.fn in self.finder(self.path):
-            if self.get_current_offset(self.fn) > self.offset[self.consumer]:
+        last_offset = self.offset[self.consumer]
+        for self.fn in self.finder:
+            current_file_offset = self.get_current_offset(self.fn)
+            logger.debug(
+                f"{current_file_offset=} > {self.offset[self.consumer]=} ==> {current_file_offset > self.offset[self.consumer]}"
+            )
+            if current_file_offset > last_offset:
+                self.max_offset = max(self.max_offset, current_file_offset, last_offset)
                 yield self.fn
                 n += 1
         logger.debug(f"Finished fetching data... {n} event(s) processed")
@@ -63,13 +77,11 @@ class EventsReader:
             self.offset[self.consumer] = 0
             logger.debug("TEST ACTIVATED -> offset=0")
         elif self.fn:
-            self.offset[self.consumer] = self.get_current_offset(self.fn)
+            self.offset[self.consumer] = self.max_offset
         else:
             logger.info(
-                f"Offset for consumer  {self.consumer} offset {self.offset[self.consumer]} with nothing to be saved"
+                f"Offset for consumer  {self.consumer} offset {self.max_offset} with nothing to be saved"
             )
         with open(self.storage_file, "wb") as f:
             pickle.dump(self.offset, f)
-        logger.info(
-            f"Offset for consumer {self.consumer} {self.offset[self.consumer]} saved"
-        )
+        logger.info(f"Offset for consumer {self.consumer} {self.max_offset} saved")

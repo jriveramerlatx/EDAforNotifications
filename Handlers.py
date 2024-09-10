@@ -15,6 +15,15 @@ class User(BaseModel):
 
 
 class Subscription(BaseModel):
+    id: str
     action: str  # add,remove,update
     categoryid: str
     userid: str
+
+
+class Publication(BaseModel):
+    id: str
+    action: str
+    categoryid: str
+    title: str
+    comments: str
