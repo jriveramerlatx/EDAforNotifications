@@ -1,9 +1,10 @@
-Project description:
-The project is about a Notification System to users subscribed to some events categories.
+# Project Description: EDAforNotification
+The project is about a notification system for users who are subscribed to some event categories.
 
-The idea behind bas to create an Event Driven Architecture.
+The idea behind this is to create an Event Driven Architecture.
 
 The directory ./Stream contains all the events stored to be processed by consumer programs.
+
 The events can be created with the following command:
 $  ./main.py --addcategory 
  or
@@ -12,14 +13,15 @@ $  ./main.py --addcategory --fields add categoryid categoryname
 Also there is the file demo.sh with a demo for creating users, categories, subscriptions and publication of events to be notified to the users subscribed.
 
 
-# HOW TO START
+## HOW TO START
+
 To execute the project:
 1) Install anaconda
 2) bash ./conda_start.sh
 3) pip install -r requirements.txt
 4) Execute demo with the following command: bash ./demo.sh
 
-# Project files:
+## Project files:
 
 |    file        |           function                      |
 |----------------|-----------------------------------------|
@@ -29,7 +31,7 @@ To execute the project:
 |test_Storage.py | Testing of Storage                      |
 |main.py         | Program to execute on command line      |
 
-# Events used on the System of Notifications:
+## Events used on the System of Notifications:
 
 | Name of Event | Description                                                                                |
 |---------------|--------------------------------------------------------------------------------------------|
@@ -40,7 +42,7 @@ To execute the project:
 
 
 
-# Main.py Usage:
+## Main.py Usage:
 
 You can find about the parameters executing:
 $> ./main.py -?
