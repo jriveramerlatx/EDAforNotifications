@@ -1,5 +1,5 @@
 # Project Description: EDAforNotification
-The project is about a notification system for users who are subscribed to some event categories.
+A notification system for users who are subscribed to some event categories.
 
 The idea behind this is to create an Event Driven Architecture.
 
