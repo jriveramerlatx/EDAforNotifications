@@ -1,7 +1,7 @@
 # Project Description: EDAforNotification
 A notification system for users who are subscribed to some event categories.
 
-The idea behind this is to create an Event Driven Architecture.
+An easy way to implement an Event Driven Architecture project.
 
 The directory ./Stream contains all the events stored to be processed by consumer programs.
 
