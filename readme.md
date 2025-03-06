@@ -1,4 +1,4 @@
-# Project Description: EDAforNotification
+# An Easy Event Driven Architecture Implementation
 A notification system for users who are subscribed to some event categories.
 
 An easy way to implement an Event Driven Architecture project.
