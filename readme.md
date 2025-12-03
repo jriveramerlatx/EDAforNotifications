@@ -44,10 +44,10 @@ To execute the project:
 
 ## Main.py Usage:
 
-You can find about the parameters executing:
+You can find out about the parameters executing:
 $> ./main.py -?
 
-The options are folowwing the structure of the command:
+The options are following the structure of the command:
 
 ## Commandline for handling Users
 
